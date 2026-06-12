@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: green-it-optimizer
+
+server:
+  port: 8080
+
+# Azure credentials – use environment variables for security
+azure:
+  client-id: ${AZURE_CLIENT_ID}
+  client-secret: ${AZURE_CLIENT_SECRET}
+  tenant-id: ${AZURE_TENANT_ID}
+  subscription-id: ${AZURE_SUBSCRIPTION_ID}
+
+# TimescaleDB connection
+spring:
+  datasource:
+    url: jdbc:postgresql://timescaledb:5432/green_it
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  endpoint:
+    prometheus:
+      enabled: true
+
+# Micrometer configuration (custom metrics will be auto‑registered)
+micrometer:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
